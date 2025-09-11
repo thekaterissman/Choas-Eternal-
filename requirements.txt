@@ -1,3 +1,4 @@
-python_versionspace==3.9
+packaging 
 Django
 pyschopg2
+pytz
