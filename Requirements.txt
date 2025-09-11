@@ -1,4 +1,5 @@
-python_versionspace==3.7
+python_versionspace==3.9
 Django
+pyschopg2
 Pillow
 request
