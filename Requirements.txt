@@ -1,1 +1,4 @@
 python_versionspace==3.7
+Django
+Pillow
+request
