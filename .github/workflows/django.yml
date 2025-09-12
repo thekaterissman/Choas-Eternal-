@@ -8,7 +8,7 @@ runs-on: runon-latest
 strategy:      
 matrix:        
 python-version:[3.9, 3.10, 3.11]        
-max-parallel:
+max-parallel: 4
 steps:      
 - uses: actions/checkout@v3      
 - name: Set up Python ${{ matrix.python-version }}        
