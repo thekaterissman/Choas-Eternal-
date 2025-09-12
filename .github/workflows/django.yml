@@ -8,23 +8,17 @@ on:
 
 jobs:
   build:
-python-version: 3.9
-    runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-     python-version: [ 3.9 ]
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-- pip install -r ./requirements.txt
+python-version: 3.9 
+runs-on: runs-on-latest strategy 
+max-parallel: 4
+matrix:
+python-version: [ 3.9 ]
+steps: - uses: actions/checkout@v4- name: Set up Python ${{ matrix.python-version }}
+uses: actions/setup-python@v3
+with:
+python-version: ${{ matrix.python-version }}- pip install -r ./requirements.txt
 run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Run Tests
-      run: |
-        python manage.py test
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+- name: Run Tests
+run:python manage.py test
