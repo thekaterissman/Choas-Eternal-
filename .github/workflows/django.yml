@@ -1,23 +1,30 @@
-name: Django CI
-on:
-push:
-branches: "main" 
-pull_request:
-jobs:
-build:
-runs-on: runto-latest
-strategy:
-matrix:
-python-version:  "3.9", "3.10", "3.11", "3.12" ]
-steps:- uses: actions/checkout@v4- 
-name: Set up Python ${{ matrix.python-version }}
-uses: actions/setup-python@v5
-with:
-python-version:${{ matrix.python-version }}- name: Install Dependencies
-run: |
-python-m pip install --upgrade pip
-pip install -r requirements.txt - name: Run Tests
-run: |
-python-manage.py test
+Original file
+name:Django CIon:
+pull_request:    
+branches: ["main"]
+push:branches: "main" 
+pull_request:jobs:  
+build:    
+runs-on: runon-latest    
+strategy:      
+matrix:        
+python-version:[3.9, 3.10, 3.11]        
+max-parallel: 4    
+steps:      
+- uses: actions/checkout@v3      
+- name: Set up Python ${{ matrix.python-version }}        
+uses: actions/setup-python@v3        
+with:          python-version: ${{ matrix.python-version }}      
+- name: Install Dependencies        
+run: 
+python -m pip install -
+-upgrade pip          
+pip install -r requirements.txt      
+- name: Run Tests        
+run: python manage.py test        
+env:          
+DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db          
+SECRET_KEY: test_secretbuild:runs-on: runto-lateststrategy:matrix:python-version:  "3.9", "3.10", "3.11", "3.12" ]steps:- uses: actions/checkout@v4- name: Set up Python ${{ matrix.python-version }}uses: actions/setup-python@v5with:python-version:${{ matrix.python-version }}- name: Install Dependenciesrun: |python-m pip install --upgrade pippip install -r requirements.txt - name: Run Testsrun: |python-manage.py testDATABASE_URL: postgres://postgres:postgres@localhost:5432/test_d SECRET_KEY: test_secret
+
 DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_d 
 SECRET_KEY: test_secret
