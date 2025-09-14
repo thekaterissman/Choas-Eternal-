@@ -1,4 +1,4 @@
-aiimport random
+import random
 import json  # For saving "memories"
 
 class AIChaosBrain:
