@@ -13,3 +13,9 @@ class EffectsRenderer:
 
     def basic_roar(self):
         print("Rendering basic roar: A deep rumble from the Leo constellation.")
+
+    def render_ai_body(self):
+        print("Rendering AI body: A vortex of swirling light and code appears in the arena.")
+
+    def unrender_ai_body(self):
+        print("Unrendering AI body: The vortex of light and code dissipates.")

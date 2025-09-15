@@ -1,6 +1,7 @@
 import random
 import json  # For saving "memories"
 from effects_renderer import EffectsRenderer
+from ai_body import AIBody
 
 class AIChaosBrain:
     def __init__(self):
@@ -8,6 +9,7 @@ class AIChaosBrain:
         self.fears = ['sandstorm', 'floating_islands', 'dance_or_die', 'ground_quake']  # Your nightmares
         self.memory_file = 'chaos_memory.json'  # Persists across runs
         self.renderer = EffectsRenderer()
+        self.body = AIBody(self.renderer)
 
     def learn_move(self, move):
         self.player_moves.append(move)
@@ -27,7 +29,14 @@ class AIChaosBrain:
             else:
                 self.renderer.floating_islands()
         else:
+            # Not dodging? Maybe the AI gets curious and appears.
+            if random.random() < 0.5:
+                self.body.manifest()
             self.renderer.basic_roar()
+
+        # After any twist, the body might disappear
+        if self.body.is_manifested and random.random() < 0.5:
+            self.body.disappear()
 
     def save_memory(self):
         memory = {'moves': self.player_moves}
