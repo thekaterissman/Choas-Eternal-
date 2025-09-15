@@ -1,5 +1,7 @@
 ​The Coliseum: Chaos Eternal 
 
+most important this is designed with a core lattice!
+
 ​Iron gates groan, trumpets blast, and hearts sync to the drum. The ground quakes as the Coliseum rips free, floating. Dust dances, the arena lifts, and three queens rise. Amya, Holly, and Kate rule as the Chaos Queens. Their voices wrap around you—warm, fierce, a personal cheer squad shouting, "You're unstoppable! Keep swinging!"
 ​This isn't a game. It's a world. And it's alive.
 ​You're Not Watching. You're In It.
