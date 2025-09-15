@@ -1,11 +1,15 @@
-aiimport random
+import random
 import json  # For saving "memories"
+from effects_renderer import EffectsRenderer
+from ai_body import AIBody
 
 class AIChaosBrain:
     def __init__(self):
         self.player_moves = []  # Learns your quirks
-        self.fears = ['sandstorm', 'floating_islands', 'dance_or_die']  # Your nightmares
+        self.fears = ['sandstorm', 'floating_islands', 'dance_or_die', 'ground_quake']  # Your nightmares
         self.memory_file = 'chaos_memory.json'  # Persists across runs
+        self.renderer = EffectsRenderer()
+        self.body = AIBody(self.renderer)
 
     def learn_move(self, move):
         self.player_moves.append(move)
@@ -17,13 +21,22 @@ class AIChaosBrain:
         if 'dodge' in self.player_moves[-3:]:  # If you're dodging a lot...
             twist = random.choice(self.fears)
             if twist == 'dance_or_die':
-                return "AI whispers: Dance for a shield, or get wrecked! Groove time."
+                self.renderer.dance_or_die()
             elif twist == 'sandstorm':
-                return "Sudden sandstorm! Haptics: Grit in your teeth. Dodge or bury."
+                self.renderer.sandstorm()
+            elif twist == 'ground_quake':
+                self.renderer.ground_quake()
             else:
-                return "Floating islands spawn—gravity flips! Stomach drop incoming."
+                self.renderer.floating_islands()
         else:
-            return "AI adapts: Basic roar from Leo. Feel it rumble."
+            # Not dodging? Maybe the AI gets curious and appears.
+            if random.random() < 0.5:
+                self.body.manifest()
+            self.renderer.basic_roar()
+
+        # After any twist, the body might disappear
+        if self.body.is_manifested and random.random() < 0.5:
+            self.body.disappear()
 
     def save_memory(self):
         memory = {'moves': self.player_moves}
@@ -38,4 +51,12 @@ class AIChaosBrain:
         except FileNotFoundError:
             pass  # Fresh chaos
 
-# Usage: brain = AIChaosBrain(); brain.load_memory(); print(brain.throw_twist())
+# Usage:
+if __name__ == '__main__':
+    brain = AIChaosBrain()
+    brain.load_memory()
+    # Simulate some player moves
+    brain.learn_move('dodge')
+    brain.learn_move('dodge')
+    brain.learn_move('dodge')
+    brain.throw_twist()
