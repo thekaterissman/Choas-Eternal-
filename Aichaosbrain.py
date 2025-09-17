@@ -1,11 +1,32 @@
-aiimport random
-import json  # For saving "memories"
+import random
+import json
+import os
+from google.cloud import storage
 
 class AIChaosBrain:
     def __init__(self):
         self.player_moves = []  # Learns your quirks
         self.fears = ['sandstorm', 'floating_islands', 'dance_or_die']  # Your nightmares
         self.memory_file = 'chaos_memory.json'  # Persists across runs
+
+        # --- Google Cloud Storage Setup ---
+        # Instructions:
+        # 1. Make sure you have authenticated with Google Cloud CLI: `gcloud auth application-default login`
+        # 2. Set the GCS_BUCKET_NAME environment variable to your bucket name:
+        #    export GCS_BUCKET_NAME="your-gcs-bucket-name"
+        try:
+            self.storage_client = storage.Client()
+            bucket_name = os.environ.get("GCS_BUCKET_NAME")
+            if not bucket_name:
+                print("GCS_BUCKET_NAME environment variable not set. Using local file storage.")
+                self.bucket = None
+            else:
+                self.bucket = self.storage_client.bucket(bucket_name)
+        except Exception as e:
+            print(f"Could not initialize Google Cloud Storage client. Using local file storage. Error: {e}")
+            self.bucket = None
+        # --- End GCS Setup ---
+
 
     def learn_move(self, move):
         self.player_moves.append(move)
@@ -27,15 +48,38 @@ class AIChaosBrain:
 
     def save_memory(self):
         memory = {'moves': self.player_moves}
-        with open(self.memory_file, 'w') as f:
-            json.dump(memory, f)
+
+        if not self.bucket: # Fallback to local storage
+            with open(self.memory_file, 'w') as f:
+                json.dump(memory, f)
+            return
+
+        blob = self.bucket.blob(self.memory_file)
+        blob.upload_from_string(
+            data=json.dumps(memory),
+            content_type='application/json'
+        )
+
 
     def load_memory(self):
-        try:
-            with open(self.memory_file, 'r') as f:
-                memory = json.load(f)
+        if not self.bucket: # Fallback to local storage
+            try:
+                with open(self.memory_file, 'r') as f:
+                    memory = json.load(f)
+                    self.player_moves = memory.get('moves', [])
+            except FileNotFoundError:
+                pass  # Fresh chaos
+            return
+
+        blob = self.bucket.blob(self.memory_file)
+        if blob.exists():
+            try:
+                memory_data = blob.download_as_string()
+                memory = json.loads(memory_data)
                 self.player_moves = memory.get('moves', [])
-        except FileNotFoundError:
-            pass  # Fresh chaos
+            except Exception as e:
+                print(f"Failed to load memory from GCS: {e}")
+        else:
+            pass # Fresh chaos, no memory file yet
 
 # Usage: brain = AIChaosBrain(); brain.load_memory(); print(brain.throw_twist())
