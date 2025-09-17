@@ -1,7 +1,7 @@
 aiimport random
 import json  # For saving "memories"
 
-class AIChaosBrain:
+class GeevesBrain:
     def __init__(self):
         self.player_moves = []  # Learns your quirks
         self.fears = ['sandstorm', 'floating_islands', 'dance_or_die']  # Your nightmares
@@ -38,4 +38,4 @@ class AIChaosBrain:
         except FileNotFoundError:
             pass  # Fresh chaos
 
-# Usage: brain = AIChaosBrain(); brain.load_memory(); print(brain.throw_twist())
+# Usage: brain = GeevesBrain(); brain.load_memory(); print(brain.throw_twist())
