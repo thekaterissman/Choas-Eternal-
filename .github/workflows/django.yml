@@ -1,111 +1,31 @@
-Original file name:Django CIon:
-pull_request:    
-branches: ["main"]
-push:branches: "main" 
-pull_request:jobs:  
-build:    
-runs-on: ubuntu-latest
-strategy:      
-matrix: 
-python-version:[3.9, 3.10, 3.11]        
-max-parallel: 4
-steps:      
-- uses: actions/checkout@v3      
-- name: Set up Python ${{ matrix.python-version }}        
-uses: actions/setup-python@v3        
-with:          python-version: ${{ matrix.python-version }}      
-- name: Install Dependencies        
-run: python -m pip install-upgrade pip pip install -r requirements.txt     
-name: Run Tests        
-run: python manage.py test        
-env:          
-DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db          
-SECRET_KEY: test_secretbuild:runs-on: runto-lateststrategy:matrix:python-version:  "3.9", "3.10", "3.11", "3.12" ]steps:- uses: actions/checkout@v4- name: Set up Python ${{ matrix.python-version }}uses: actions/setup-python@v5with:python-version:${{ matrix.python-version }}- name: Install Dependenciesrun: |python-m pip install --upgrade pippip install -r requirements.txt - name: Run Testsrun: |python-manage.py testDATABASE_URL: postgres://postgres:postgres@localhost:5432/test_d SECRET_KEY: test_secret
+name: Django CI
 
-DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_d 
-SECRET_KEY: test_secret
-            - name: Cache
-  uses: actions/cache@v4.2.4
-  with:
-    # A list of files, directories, and wildcard patterns to cache and restore
-    path: 
-    # An explicit key for restoring and saving the cache
-    key: 
-    # An ordered multiline string listing the prefix-matched keys, that are used for restoring stale cache if no cache hit occurred for key. Note `cache-hit` returns false in this case.
-    restore-keys: # optional
-    # The chunk size used to split up large files during upload, in bytes
-    upload-chunk-size: # optional
-    # An optional boolean when enabled, allows windows runners to save or restore caches that can be restored or saved respectively on other platforms
-    enableCrossOsArchive: # optional, default is false
-    # Fail the workflow if cache entry is not found
-    fail-on-cache-miss: # optional, default is false
-    # Check if a cache entry exists for the given input(s) (key, restore-keys) without downloading the cache
-    lookup-only: # optional, default is false
-    # Run the post step to save the cache even if another step before fails
-    save-always: # optional, default is f 
-    - name: Setup Go environment
-  uses: actions/setup-go@v6.0.0
-  with:
-    # The Go version to download (if necessary) and use. Supports semver spec and ranges. Be sure to enclose this option in single quotation marks.
-    go-version: # optional
-    # Path to the go.mod or go.work file.
-    go-version-file: # optional
-    # Set this option to true if you want the action to always check for the latest available version that satisfies the version spec
-    check-latest: # optional
-    # Used to pull Go distributions from go-versions. Since there's a default, this is typically not supplied by the user. When running this action on github.com, the default value is sufficient. When running on GHES, you can pass a personal access token for github.com if you are experiencing rate limiting.
-    token: # optional, default is ${{ github.server_url == 'https://github.com' && github.token || '' }}
-    # Used to specify whether caching is needed. Set to true, if you'd like to enable caching.
-    cache: # optional, default is true
-    # Used to specify the path to a dependency file - go.sum
-    cache-dependency-path: # optional
-    # Target architecture for Go to use. Examples: x86, x64. Will use system architecture by default.
-    architecture: # optional
-                      - name: Setup Node.js environment
-  uses: actions/setup-node@v5.0.0
-  with:
-    # Set always-auth in npmrc.
-    always-auth: # optional, default is false
-    # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
-    node-version: # optional
-    # File containing the version Spec of the version to use.  Examples: package.json, .nvmrc, .node-version, .tool-versions.
-    node-version-file: # optional
-    # Target architecture for Node to use. Examples: x86, x64. Will use system architecture by default.
-    architecture: # optional
-    # Set this option if you want the action to check for the latest available version that satisfies the version spec.
-    check-latest: # optional
-    # Optional registry to set up for auth. Will set the registry in a project level .npmrc and .yarnrc file, and set up auth to read in from env.NODE_AUTH_TOKEN.
-    registry-url: # optional
-    # Optional scope for authenticating against scoped registries. Will fall back to the repository owner when using the GitHub Packages registry (https://npm.pkg.github.com/).
-    scope: # optional
-    # Used to pull node distributions from node-versions. Since there's a default, this is typically not supplied by the user. When running this action on github.com, the default value is sufficient. When running on GHES, you can pass a personal access token for github.com if you are experiencing rate limiting.
-    token: # optional, default is ${{ github.server_url == 'https://github.com' && github.token || '' }}
-    # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
-    cache: # optional
-    # Set to false to disable automatic caching based on the package manager field in package.json. By default, caching is enabled if the package manager field is present.
-    package-manager-cache: # optional, default is true
-    # Used to specify the path to a dependency file: package-lock.json, yarn.lock, etc. Supports wildcards or a list of file names for caching multiple dependencies.
-    cache-dependency-path: # optional
-    # Used to specify an alternative mirror to downlooad Node.js binaries from
-    mirror: # optional
-    # The token used as Authorization header when fetching from the mirror
-    mirror-token: # optional
-                      - name: Download a Build Artifact
-  uses: actions/download-artifact@v5.0.0
-  with:
-    # Name of the artifact to download. If unspecified, all artifacts for the run are downloaded.
-    name: # optional
-    # IDs of the artifacts to download, comma-separated. Either inputs `artifact-ids` or `name` can be used, but not both.
-    artifact-ids: # optional
-    # Destination path. Supports basic tilde expansion. Defaults to $GITHUB_WORKSPACE
-    path: # optional
-    # A glob pattern matching the artifacts that should be downloaded. Ignored if name is specified.
-    pattern: # optional
-    # When multiple artifacts are matched, this changes the behavior of the destination directories. If true, the downloaded artifacts will be in the same directory specified by path. If false, the downloaded artifacts will be extracted into individual named directories within the specified path.
-    merge-multiple: # optional, default is false
-    # The GitHub token used to authenticate with the GitHub API. This is required when downloading artifacts from a different repository or from a different workflow run. If this is not specified, the action will attempt to download artifacts from the current repository and the current workflow run.
-    github-token: # optional
-    # The repository owner and the repository name joined together by "/". If github-token is specified, this is the repository that artifacts will be downloaded from.
-    repository: # optional, default is ${{ github.repository }}
-    # The id of the workflow run where the desired download artifact was uploaded from. If github-token is specified, this is the run that artifacts will be downloaded from.
-    run-id: # optional, default is ${{ github.run_id }}
-                
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run Tests
+      run: python manage.py test
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
+        SECRET_KEY: test_secret
