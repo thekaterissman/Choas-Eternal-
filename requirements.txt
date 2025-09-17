@@ -1,4 +1,7 @@
-packaging 
+packaging
 Django
-pyschopg2
+psycopg2-binary
 pytz
+trimesh[easy]
+pyglet
+fbxloader
