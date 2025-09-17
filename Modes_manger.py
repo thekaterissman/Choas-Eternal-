@@ -1,11 +1,14 @@
+from World import World
+
 class ModesManager:
     def __init__(self):
         self.current_mode = 'hunter'
         self.xp = 0
         self.shelters = []  # Persist builds
+        self.world = World()
 
     def switch_mode(self, mode):
-        modes = ['hunter', 'survival', 'pvp', 'raid']
+        modes = ['hunter', 'survival', 'pvp', 'raid', 'self']
         if mode in modes:
             self.current_mode = mode
             if mode == 'survival':
@@ -14,6 +17,8 @@ class ModesManager:
                 return "PvP: Teams self-select. Mix crews, clash in the arena!"
             elif mode == 'raid':
                 return "Raid villages! Steal loot, burn down – haptics make walls crack."
+            elif mode == 'self':
+                return self.world.fade_constellation()
             else:
                 return "Hunter Mode: Self-pick teams. Hunt or be hunted."
         return "Invalid mode – chaos only!"
