@@ -1,10 +1,10 @@
-aiimport random
+import random
 import json  # For saving "memories"
 
 class AIChaosBrain:
     def __init__(self):
         self.player_moves = []  # Learns your quirks
-        self.fears = ['sandstorm', 'floating_islands', 'dance_or_die']  # Your nightmares
+        self.fears = ['sandstorm', 'floating_islands', 'dance_or_die', 'whoopee_cushion']  # Your nightmares
         self.memory_file = 'chaos_memory.json'  # Persists across runs
 
     def learn_move(self, move):
@@ -20,6 +20,8 @@ class AIChaosBrain:
                 return "AI whispers: Dance for a shield, or get wrecked! Groove time."
             elif twist == 'sandstorm':
                 return "Sudden sandstorm! Haptics: Grit in your teeth. Dodge or bury."
+            elif twist == 'whoopee_cushion':
+                return "A wild whoopee cushion appears! Haptics: a sudden... vibration. The crowd chuckles."
             else:
                 return "Floating islands spawn—gravity flips! Stomach drop incoming."
         else:

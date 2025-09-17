@@ -1,3 +1,5 @@
+import random
+
 class ModesManager:
     def __init__(self):
         self.current_mode = 'hunter'
