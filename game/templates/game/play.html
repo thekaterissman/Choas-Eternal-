@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Coliseum: Chaos Eternal</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            font-family: monospace;
+            font-size: 1.2em;
+            line-height: 1.4;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 2em;
+        }
+        .status {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2em;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background-color: #333;
+            padding: 1em;
+            border-radius: 5px;
+        }
+        form {
+            margin-top: 2em;
+        }
+        input[type="text"] {
+            width: 50%;
+            padding: 0.5em;
+            font-size: 1em;
+            background-color: #333;
+            color: #f0f0f0;
+            border: 1px solid #555;
+        }
+        input[type="submit"] {
+            padding: 0.5em 1em;
+            font-size: 1em;
+            background-color: #555;
+            color: #f0f0f0;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>The Coliseum: Chaos Eternal</h1>
+        <div class="status">
+            <div><strong>Character:</strong> {{ game.character.name }}</div>
+            <div><strong>Score:</strong> {{ game.score }}</div>
+            <div><strong>Level:</strong> {{ game.level }}</div>
+            <div><strong>Coins:</strong> {{ game.bestiary.coins }}</div>
+        </div>
+
+        <h2>Game Output:</h2>
+        <pre>{% for line in game.output %}{{ line }}
+{% endfor %}</pre>
+
+        <form method="post">
+            {% csrf_token %}
+            <label for="action">Your Action:</label>
+            <input type="text" name="action" id="action" autofocus>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+</html>
