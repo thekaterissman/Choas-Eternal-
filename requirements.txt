@@ -1,4 +1,4 @@
-packaging 
 Django
-pyschopg2
+psycopg2
+packaging
 pytz
