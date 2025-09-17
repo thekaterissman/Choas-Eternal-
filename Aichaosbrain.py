@@ -10,6 +10,30 @@ class AIChaosBrain:
         self.memory_file = 'chaos_memory.json'  # Persists across runs
         self.renderer = EffectsRenderer()
         self.body = AIBody(self.renderer)
+        self.age = None
+        self.save_preference = False
+
+    def age_gate(self):
+        while True:
+            try:
+                age = int(input("Please enter your age to continue: "))
+                if age > 0:
+                    self.age = age
+                    break
+                else:
+                    print("Please enter a valid age.")
+            except ValueError:
+                print("Invalid input. Please enter a number.")
+        while True:
+            save = input("Save your age for future sessions? (yes/no): ").lower()
+            if save in ['yes', 'y']:
+                self.save_preference = True
+                break
+            elif save in ['no', 'n']:
+                self.save_preference = False
+                break
+            else:
+                print("Invalid input. Please enter yes or no.")
 
     def learn_move(self, move):
         self.player_moves.append(move)
@@ -40,6 +64,9 @@ class AIChaosBrain:
 
     def save_memory(self):
         memory = {'moves': self.player_moves}
+        if self.save_preference:
+            memory['age'] = self.age
+            memory['save_preference'] = self.save_preference
         with open(self.memory_file, 'w') as f:
             json.dump(memory, f)
 
@@ -48,6 +75,8 @@ class AIChaosBrain:
             with open(self.memory_file, 'r') as f:
                 memory = json.load(f)
                 self.player_moves = memory.get('moves', [])
+                self.age = memory.get('age')
+                self.save_preference = memory.get('save_preference')
         except FileNotFoundError:
             pass  # Fresh chaos
 
@@ -55,6 +84,8 @@ class AIChaosBrain:
 if __name__ == '__main__':
     brain = AIChaosBrain()
     brain.load_memory()
+    if not brain.age:
+        brain.age_gate()
     # Simulate some player moves
     brain.learn_move('dodge')
     brain.learn_move('dodge')
