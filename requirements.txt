@@ -1,4 +1,6 @@
-packaging 
+packaging
 Django
 pyschopg2
 pytz
+google-cloud-storage
+google-cloud-firestore
